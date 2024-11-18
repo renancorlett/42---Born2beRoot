@@ -35,29 +35,30 @@ APPArmor é usado para aumentar a segurança do sistema ao controlar o acesso de
 	##Instrucoes Gerais##
 	
 - Comparar a assinatura do documento do intra com a assinatura da maquina:
-cd sgoinfre/rcurty-g/born2beroot
-shasum born2beroot.vdi
+- cd sgoinfre/rcorlett/Born2beroot
+- Comando para descobrir assinatura na máquina virtual: shasum born2beroot.vdi
 
 
 	##Configuração Básica##
 	
-- máquina não possui um ambiente gráfico
-- uma senha é solicitada antes de conectar-se à máquina -> 42Rcurty-g
-- conectar-se usando um usuário, que não deve ser o root -> rcurty-g (senha Born2beroot), comando que mostra qual o usuario logado: whoami
-- verificar UFW ativo -> sudo ufw status
+- Máquina não possui um ambiente gráfico
+- Uma senha é solicitada antes de conectar-se à máquina -> Born2beroot
+- Conectar-se usando um usuário, que não deve ser o root -> rcorlett (senha: Flamengo1) 
+- Comando que mostra qual o usuario logado: whoami
+- Verificar UFW ativo -> sudo ufw status
 - Verificar SSH ativo -> sudo service ssh status (se nao estiver ativo: sudo service ssh restart)
-- sistema operacional escolhido é Debian -> cat /etc/os-release (ou hostnamectl)
+- Sistema operacional escolhido é Debian -> cat /etc/os-release (ou hostnamectl)
 
 
 	##Usuário##
 	
-- mostrar usuarios do sistema -> getent passwd
-- mostrar os grupos do usuario -> groups rcurty-g
+- Mostrar usuarios do sistema -> getent passwd
+- Mostrar os grupos do usuario -> groups rcorlett
 
-- criar user do avaliador -> sudo adduser novo-usuario
-- criar senha -> 10 caracteres, maiuscula, minuscula, numero, nao ter 3 caracteres seguidos iguais, nao conter o user (max 30 dias, min 2 dias)
+- Criar user do avaliador -> sudo adduser "nome-novo-usuario"
+- Criar senha -> 10 caracteres, maiuscula, minuscula, numero, nao ter 3 caracteres seguidos iguais, nao conter o user (max 30 dias, min 2 dias)
 
-- arquivos da config. de senha -> sudo nano /etc/login.defs -> sudo nano /etc/pam.d/common-password
+- Arquivos da config. de senha -> sudo nano /etc/login.defs -> sudo nano /etc/pam.d/common-password
 
     minlen=10: Mínimo de 10 caracteres.
     ucredit=-1: Pelo menos uma letra maiúscula.
@@ -68,11 +69,11 @@ shasum born2beroot.vdi
     difok=7: Pelo menos 7 caracteres diferentes da senha antiga.
     enforce_for_root: Aplica a política para o usuário root.
 
-- criar grupo evaluating -> sudo addgroup evaluating (inserir no sudo tbm)
-- add o usuario ao grupo -> sudo adduser novo-usuario evaluating
--verificar se foi add -> groups novo-usuario
+- Criar grupo evaluating -> sudo addgroup evaluating (inserir no sudo tbm)
+- Add o usuario ao grupo -> sudo adduser novo-usuario evaluating
+- Verificar se foi add -> groups "nome-novo-usuario"
 
-- vantagens e desvantagens da senha forte:
+- Vantagens e desvantagens da senha forte:
 Vantagens:
     Aumenta a segurança, dificultando que senhas sejam descobertas por ataques.
     Reduz o uso de senhas fracas.
@@ -83,26 +84,26 @@ Desvantagens:
     
     ##Hostname e Partições##
     
-    - verificar se o hostname esta correto -> hostname
-    - modificar o hostname pelo login do avaliador e reinicie a maquina -> entrar nos arquivos e substituir rcurty-g42 pelo usuario do avaliador, depois reiniciar a maquina.
+    - Verificar se o hostname esta correto -> hostname
+    - Modificar o hostname pelo login do avaliador e reinicie a maquina -> entrar nos arquivos e substituir rcorlett pelo usuario do avaliador, depois reiniciar a máquina.
 	sudo nano /etc/hostname
 	sudo nano /etc/hosts
 	sudo reboot
 	hostname
-     - Voltar para o login rcurty-g42
+     - Voltar para o login Flamengo1
      
-     - mostrar as particoes da maquina virtual -> lsblk
-     - explicar sobre LVM:
-     O LVM (Logical Volume Manager) é uma ferramenta no Linux que facilita o gerenciamento de discos e partições,  traz flexibilidade e eficiência para gerenciar o armazenamento no Linux, tornando mais fácil lidar com alterações de espaço em disco.
-     "Durante a instalação do Debian, optei por usar o particionamento automático com LVM criptografado. Isso configurou automaticamente o volume group rcurty-g42--vg e os volumes lógicos para /, swap e /home."
+     - Mostrar as particoes da maquina virtual -> lsblk
+     - Explicar sobre LVM:
+     O LVM (Logical Volume Manager) é uma ferramenta no Linux que facilita o gerenciamento de discos e partições, traz flexibilidade e eficiência para gerenciar o armazenamento no Linux, tornando mais fácil lidar com alterações de espaço em disco.
+     "Durante a instalação do Debian, optei por usar o particionamento automático com LVM criptografado. Isso configurou automaticamente o volume group rcorlett42--vg e os volumes lógicos para /, swap e /home."
      
      
      ##SUDO##
      
-     - verificar se o sudo esta instalado -> sudo -V
-     - add user ao grupo sudo -> sudo adduser novo-usuario sudo (ja foi feito usar: groups novo-usuario)
-     - explicacao: Permite que usuários normais executem comandos administrativos sem usar o root diretamente, aumentando a segurança. ex.: sudo apt update
-     - verificar regras -> sudo nano /etc/sudoers.d/sudo_config
+     - Verificar se o sudo esta instalado -> sudo -V
+     - Add user ao grupo sudo -> sudo adduser novo-usuario sudo (já foi feito usar: groups "nome-novo-usuario")
+     - Explicacao: Permite que usuários normais executem comandos administrativos sem usar o root diretamente, aumentando a segurança. ex.: sudo apt update
+     - Verificar regras -> sudo nano /etc/sudoers.d/sudo_config
      EXPLICACAO:
 	Defaults passwd_tries=3 → Limita a 3 tentativas de senha no sudo.
 	Defaults badpass_message="Error" → Mostra a mensagem "Error" ao digitar a senha incorreta.
@@ -110,11 +111,11 @@ Desvantagens:
 	Defaults log_input, log_output → Registra o comando digitado e o resultado no log.
 	Defaults iolog_dir="/var/log/sudo" → Define onde os logs detalhados serão armazenados.
 	Defaults requiretty → Exige que o sudo seja usado em um terminal (TTY).
-	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin" → Restringe 							os diretórios onde o sudo busca comandos.
+	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin" → Restringe os diretórios onde o sudo busca comandos.
 	
-     - verificar se a pasta sudo existe -> entrar no root -> ls /var/log/sudo/
-     - abrir o arquivo de historico -> cat /var/log/sudo/sudo_config
-     - executar um comando com sudo e verificar atualizacao do historico -> sudo ls /root -> cat /var/log/sudo/sudo_config
+     - Verificar se a pasta sudo existe -> entrar no root -> ls /var/log/sudo/
+     - Abrir o arquivo de historico -> cat /var/log/sudo/sudo_config
+     - Executar um comando com sudo e verificar atualizacao do historico -> sudo ls /root -> cat /var/log/sudo/sudo_config
      
      
      ## UFW ##
@@ -127,16 +128,16 @@ Desvantagens:
      
      ## SUDO ##
      
-     - verificar se esta instalado -> sudo service ssh status (se nao: sudo apt install openssh-server)
+     - Verificar se esta instalado -> sudo service ssh status (se nao: sudo apt install openssh-server)
      - SSH (Secure Shell) é um protocolo de rede usado para acessar e gerenciar máquinas remotamente com segurança, usando criptografia.
-     - verificar configuracao do 4242 -> sudo nano /etc/ssh/sshd_config
-     - locar o novo usuario na maquina real -> hostname -I -> ssh usuario@hostname -p 4242 -> sudo ufw status numbered
+     - Verificar configuracao do 4242 -> sudo nano /etc/ssh/sshd_config
+     - Locar o novo usuario na maquina real -> hostname -I -> ssh usuario@hostname -p 4242 -> sudo ufw status numbered
 
      
      ## Script Monitoring ##
      
-     - mostrar o script -> na root -> cat monitoring.sh
+     - Mostrar o script -> na root -> cat monitoring.sh
      - CRON -> O cron é um gerenciador de tarefas no Linux que permite agendar a execução de comandos ou scripts em intervalos regulares, como a cada minuto, hora ou dia.
-     - mostrar conteudo do crontab -> sudo crontab -u root -e
-     - executar script manualmente -> sh monitoring.sh
+     - Mostrar conteudo do crontab -> sudo crontab -u root -e
+     - Executar script manualmente -> sh monitoring.sh
      
