@@ -126,7 +126,7 @@ Desvantagens:
      - para deletar a regra de 8080 -> sudo ufw status numbered -> sudo ufw delete numero-da-regra
      
      
-     ## SUDO ##
+     ## SSH ##
      
      - Verificar se esta instalado -> sudo service ssh status (se nao: sudo apt install openssh-server)
      - SSH (Secure Shell) é um protocolo de rede usado para acessar e gerenciar máquinas remotamente com segurança, usando criptografia.
