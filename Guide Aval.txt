@@ -1,0 +1,142 @@
+1. Como funciona uma máquina virtual?
+Uma máquina virtual é um software que simula um computador físico dentro de outro computador. Ela utiliza recursos reais da máquina principal (host) e permite rodar sistemas operacionais isolados do sistema principal.
+
+
+2. Por que escolheu Debian como sistema operacional?
+Escolhi Debian por sua estabilidade, segurança e ampla documentação. É ideal para servidores e ambientes de aprendizado, oferecendo um sistema leve e confiável.
+
+
+3. Qual é a diferença básica entre Rocky Linux e Debian?
+    Debian: Focado na estabilidade e simplicidade, usa o gerenciador de pacotes apt com arquivos .deb.
+    Rocky Linux: Voltado para empresas, baseado no Red Hat, usa o gerenciador de pacotes dnf com arquivos .rpm.
+    
+    
+4. Qual é o propósito das máquinas virtuais?
+Máquinas virtuais são usadas para criar ambientes isolados para testes, desenvolvimento ou aprendizado. Elas economizam recursos e aumentam a segurança ao manter o sistema principal intacto.
+
+
+5.1 Diferença entre aptitude e apt:
+    aptitude: É um gerenciador de pacotes mais avançado e interativo. Oferece uma interface mais completa, que permite resolver conflitos de dependências automaticamente com sugestões detalhadas.
+    apt: É uma ferramenta mais simples e direta para instalar, remover e atualizar pacotes. É suficiente para a maioria das tarefas cotidianas.
+    
+    RESUMO:
+    - Use apt para tarefas rápidas e simples.
+    - Use aptitude se precisar de uma ferramenta mais avançada para resolver problemas de dependências.
+
+5.2 O que é APPArmor?
+    - APPArmor (Application Armor) é um sistema de controle de acesso baseado em políticas de segurança.
+    - Ele restringe o que os programas podem fazer no sistema, limitando o acesso a arquivos, rede ou outros recursos.
+    - Funciona como uma camada extra de proteção, ajudando a evitar comportamentos maliciosos, mesmo que o programa tenha sido comprometido.
+    
+    RESUMO:
+APPArmor é usado para aumentar a segurança do sistema ao controlar o acesso de aplicativos aos recursos.
+
+
+	##Instrucoes Gerais##
+	
+- Comparar a assinatura do documento do intra com a assinatura da maquina:
+cd sgoinfre/rcurty-g/born2beroot
+shasum born2beroot.vdi
+
+
+	##Configuração Básica##
+	
+- máquina não possui um ambiente gráfico
+- uma senha é solicitada antes de conectar-se à máquina -> 42Rcurty-g
+- conectar-se usando um usuário, que não deve ser o root -> rcurty-g (senha Born2beroot), comando que mostra qual o usuario logado: whoami
+- verificar UFW ativo -> sudo ufw status
+- Verificar SSH ativo -> sudo service ssh status (se nao estiver ativo: sudo service ssh restart)
+- sistema operacional escolhido é Debian -> cat /etc/os-release (ou hostnamectl)
+
+
+	##Usuário##
+	
+- mostrar usuarios do sistema -> getent passwd
+- mostrar os grupos do usuario -> groups rcurty-g
+
+- criar user do avaliador -> sudo adduser novo-usuario
+- criar senha -> 10 caracteres, maiuscula, minuscula, numero, nao ter 3 caracteres seguidos iguais, nao conter o user (max 30 dias, min 2 dias)
+
+- arquivos da config. de senha -> sudo nano /etc/login.defs -> sudo nano /etc/pam.d/common-password
+
+    minlen=10: Mínimo de 10 caracteres.
+    ucredit=-1: Pelo menos uma letra maiúscula.
+    dcredit=-1: Pelo menos um dígito.
+    lcredit=-1: Pelo menos uma letra minúscula.
+    maxrepeat=3: Não repetir o mesmo caractere mais de 3 vezes.
+    reject_username: Não pode conter o nome do usuário.
+    difok=7: Pelo menos 7 caracteres diferentes da senha antiga.
+    enforce_for_root: Aplica a política para o usuário root.
+
+- criar grupo evaluating -> sudo addgroup evaluating (inserir no sudo tbm)
+- add o usuario ao grupo -> sudo adduser novo-usuario evaluating
+-verificar se foi add -> groups novo-usuario
+
+- vantagens e desvantagens da senha forte:
+Vantagens:
+    Aumenta a segurança, dificultando que senhas sejam descobertas por ataques.
+    Reduz o uso de senhas fracas.
+Desvantagens:
+    Pode ser difícil lembrar senhas mais complexas.
+    Configurações muito rigorosas podem frustrar os usuários.
+    
+    
+    ##Hostname e Partições##
+    
+    - verificar se o hostname esta correto -> hostname
+    - modificar o hostname pelo login do avaliador e reinicie a maquina -> entrar nos arquivos e substituir rcurty-g42 pelo usuario do avaliador, depois reiniciar a maquina.
+	sudo nano /etc/hostname
+	sudo nano /etc/hosts
+	sudo reboot
+	hostname
+     - Voltar para o login rcurty-g42
+     
+     - mostrar as particoes da maquina virtual -> lsblk
+     - explicar sobre LVM:
+     O LVM (Logical Volume Manager) é uma ferramenta no Linux que facilita o gerenciamento de discos e partições,  traz flexibilidade e eficiência para gerenciar o armazenamento no Linux, tornando mais fácil lidar com alterações de espaço em disco.
+     "Durante a instalação do Debian, optei por usar o particionamento automático com LVM criptografado. Isso configurou automaticamente o volume group rcurty-g42--vg e os volumes lógicos para /, swap e /home."
+     
+     
+     ##SUDO##
+     
+     - verificar se o sudo esta instalado -> sudo -V
+     - add user ao grupo sudo -> sudo adduser novo-usuario sudo (ja foi feito usar: groups novo-usuario)
+     - explicacao: Permite que usuários normais executem comandos administrativos sem usar o root diretamente, aumentando a segurança. ex.: sudo apt update
+     - verificar regras -> sudo nano /etc/sudoers.d/sudo_config
+     EXPLICACAO:
+	Defaults passwd_tries=3 → Limita a 3 tentativas de senha no sudo.
+	Defaults badpass_message="Error" → Mostra a mensagem "Error" ao digitar a senha incorreta.
+	Defaults logfile="/var/log/sudo/sudo_config" → Registra os comandos sudo no arquivo de log.
+	Defaults log_input, log_output → Registra o comando digitado e o resultado no log.
+	Defaults iolog_dir="/var/log/sudo" → Define onde os logs detalhados serão armazenados.
+	Defaults requiretty → Exige que o sudo seja usado em um terminal (TTY).
+	Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin" → Restringe 							os diretórios onde o sudo busca comandos.
+	
+     - verificar se a pasta sudo existe -> entrar no root -> ls /var/log/sudo/
+     - abrir o arquivo de historico -> cat /var/log/sudo/sudo_config
+     - executar um comando com sudo e verificar atualizacao do historico -> sudo ls /root -> cat /var/log/sudo/sudo_config
+     
+     
+     ## UFW ##
+     
+     - verificar se ufw esta instalado -> sudo ufw status (para instalar: sudo apt install ufw, para ativar: sudo ufw enable)
+     - UFW é uma ferramenta para gerenciar regras de firewall de forma simples e intuitiva. Ele aumenta a segurança ao controlar o tráfego de entrada e saída na máquina."
+     - adicionar regra para porta 8080 -> sudo ufw allow 8080 -> sudo ufw status
+     - para deletar a regra de 8080 -> sudo ufw status numbered -> sudo ufw delete numero-da-regra
+     
+     
+     ## SUDO ##
+     
+     - verificar se esta instalado -> sudo service ssh status (se nao: sudo apt install openssh-server)
+     - SSH (Secure Shell) é um protocolo de rede usado para acessar e gerenciar máquinas remotamente com segurança, usando criptografia.
+     - verificar configuracao do 4242 -> sudo nano /etc/ssh/sshd_config
+     - locar o novo usuario na maquina real -> hostname -I -> ssh usuario@hostname -p 4242 -> sudo ufw status numbered
+
+     
+     ## Script Monitoring ##
+     
+     - mostrar o script -> na root -> cat monitoring.sh
+     - CRON -> O cron é um gerenciador de tarefas no Linux que permite agendar a execução de comandos ou scripts em intervalos regulares, como a cada minuto, hora ou dia.
+     - mostrar conteudo do crontab -> sudo crontab -u root -e
+     - executar script manualmente -> sh monitoring.sh
+     
