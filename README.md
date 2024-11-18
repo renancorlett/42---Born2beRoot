@@ -9,11 +9,11 @@ Configuration of a Debian virtual machine in VirtualBox with a focus on security
 - **Mostrar versão e configurações do sudo**: `sudo -V`
 
 ### GRUPOS E USUÁRIOS
-- **Criar usuário**: `sudo adduser rcurty-g`
+- **Criar usuário**: `sudo adduser rcorlett`
 - **Criar grupo**: `sudo addgroup user42`
 - **Verificar se o grupo foi criado**: `getent group nombre_grupo`
 - **Listar todos os grupos existentes**: `cat /etc/group`
-- **Adicionar usuário ao grupo**: `sudo adduser rcurty-g user42`
+- **Adicionar usuário ao grupo**: `sudo adduser rcorlett user42`
 - **Verificar se o usuário está no grupo**: `getent group group_name` (ex.: `getent group user42`)
 - **Verificar se o usuário está nos grupos sudo e user42**: `nano /etc/group`
 
@@ -83,7 +83,7 @@ minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 e
   - Em "Settings" > "Network" > "Bridged Adapter" para acesso à rede.
 - **Obter IP da máquina virtual**: `hostname -I`
 - **Conectar via SSH**:
-  - Na máquina real: `ssh rcorlett@ip -p 4242`
+  - Na máquina real: `ssh rcorlett@ipdamaquinavirtual -p 4242`
 - **Verificar status do UFW**: `sudo ufw status numbered` para conferir se a porta 4242 está ativa
 
 ### SCRIPT DE MONITORAMENTO
