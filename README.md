@@ -83,7 +83,7 @@ minlen=10 ucredit=-1 dcredit=-1 lcredit=-1 maxrepeat=3 reject_username difok=7 e
   - Em "Settings" > "Network" > "Bridged Adapter" para acesso à rede.
 - **Obter IP da máquina virtual**: `hostname -I`
 - **Conectar via SSH**:
-  - Na máquina real: `ssh rcurty-g@ip -p 4242`
+  - Na máquina real: `ssh rcorlett@ip -p 4242`
 - **Verificar status do UFW**: `sudo ufw status numbered` para conferir se a porta 4242 está ativa
 
 ### SCRIPT DE MONITORAMENTO
