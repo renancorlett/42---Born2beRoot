@@ -104,7 +104,7 @@ sh monitoring.sh
 
 ### CRONTAB
 - **Configurar para rodar a cada 10 min**:
-  - `sudo crontab -u root -e` e adicione `*/10 * * * * sh /caminho/monitoring.sh`
+  - `sudo crontab -u root -e` e adicione `*/10 * * * * sh /home/rcorlett/monitoring.sh`
 
 ### SIGNATURE
 - **Obter assinatura da VM**:
