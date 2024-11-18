@@ -1,0 +1,58 @@
+# Parte Obrigatória
+
+## Visão Geral do Projeto:
+O projeto consiste em criar e configurar uma máquina virtual seguindo regras estritas. Durante a defesa, o estudante avaliado deve:
+    - Explicar como funciona uma máquina virtual.
+    - Justificar a escolha do sistema operacional.
+    - Apresentar as diferenças básicas entre Rocky Linux e Debian.
+    - Descrever a finalidade das máquinas virtuais.
+    - Explicar os conceitos de SELinux e DNF (se Rocky foi escolhido) ou as diferenças entre aptitude e apt, além de APPArmor (se Debian foi escolhido).
+
+Um script deve exibir informações a cada 10 minutos. O funcionamento deste script será verificado posteriormente.
+
+
+## Configuração Básica
+    - Certifique-se de que a máquina não possui um ambiente gráfico no lançamento.
+    - Verifique que uma senha é solicitada antes de conectar-se à máquina.
+    - Conecte-se usando um usuário, que não deve ser o root.
+    - Certifique-se de que o serviço UFW está ativo.
+    - Verifique que o sistema operacional escolhido é Debian ou Rocky Linux.
+
+
+## Usuário
+    - Confirme que um usuário com o login do estudante avaliado está presente na máquina virtual.
+    - Verifique que esse usuário pertence aos grupos sudo e user42.
+    - Crie um novo usuário durante a defesa e atribua uma senha que siga as regras do projeto. O estudante avaliado deve explicar como configurou essas regras na máquina virtual.
+    - Peça ao estudante avaliado para criar um grupo chamado "evaluating" e atribuí-lo ao novo usuário.
+
+
+## Nome da Máquina e Partições
+    - Verifique que o hostname da máquina está formatado como login42.
+    - Modifique o hostname com o seu login, reinicie a máquina e confirme que a mudança foi aplicada.
+    - Peça ao estudante avaliado para exibir as partições da máquina virtual e explique o funcionamento do LVM.
+
+
+## SUDO
+    - Verifique se o programa sudo está instalado na máquina virtual.
+    - Confira que o novo usuário foi adicionado ao grupo sudo.
+    - Verifique que as regras do sudo foram configuradas conforme solicitado no projeto.
+    - Confirme que a pasta /var/log/sudo/ existe e contém pelo menos um arquivo com o histórico de comandos executados via sudo.
+
+
+## UFW / Firewall
+    - Verifique se o programa UFW (ou Firewalld no caso do Rocky) está instalado.
+    - Liste as regras ativas e confirme que há uma regra para a porta 4242.
+    - Adicione uma regra para abrir a porta 8080 e depois remova-a.
+
+
+## SSH
+    - Certifique-se de que o serviço SSH está instalado e funcionando corretamente.
+    - Confirme que o SSH utiliza apenas a porta 4242.
+    - Tente conectar-se usando o novo usuário criado e confirme que o acesso via root pelo SSH está desativado.
+
+
+## Script de Monitoramento
+    - Peça ao estudante avaliado para explicar como o script funciona, exibindo o código.
+    - Verifique que o script foi configurado para rodar a cada 10 minutos a partir do início do servidor.
+    - Solicite que o script seja configurado para rodar a cada minuto e teste seu funcionamento com valores dinâmicos.
+    - Peça ao estudante avaliado que interrompa a execução do script sem modificá-lo, reinicie o servidor e confirme que o script ainda existe, tem os mesmos direitos e não foi alterado.
